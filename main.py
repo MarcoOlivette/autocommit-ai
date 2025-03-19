@@ -1,6 +1,6 @@
-
 import os
 import sys
+import openai
 import subprocess
 from dotenv import load_dotenv
 from ai.gpt import GPTCommitMessageGenerator
@@ -35,17 +35,29 @@ os.chdir(repo_path)
 files = subprocess.run(["git", "status", "--short"], capture_output=True, text=True).stdout
 files = [line.split()[1] for line in files.splitlines() if line]
 
-print("📜 Arquivos modificados:")
-for file in files:
-    print(f"🔹 {file}")
+print("📜 Mudanças detectadas:")
 print("-------------------------")
 
 # Processar cada arquivo
 for file in files:
+    # Obter as mudanças do arquivo
+    diff_output = subprocess.run(["git", "diff", "--", file], capture_output=True, text=True).stdout
+
+    if not diff_output.strip():
+        continue  # Pular se não houver mudanças
+
+    # Mostrar as mudanças no terminal
+    #print(f"🔹 Arquivo: {file}")
+    #print(diff_output)  # Exibe as alterações no terminal
+    #print("-------------------------")
+
+    # Gerar mensagem de commit usando a IA
     commit_msg = ai.generate_commit_message(file)
+
     if commit_msg:
         #subprocess.run(["git", "add", file])
         #subprocess.run(["git", "commit", "-m", commit_msg])
         print(f"✅ Committed: {file} -> {commit_msg}")
+        print("-------------------------")
 
 print("🎉 Todos os arquivos foram commitados individualmente.")

@@ -7,7 +7,9 @@ class GPTCommitMessageGenerator:
         self.api_key = os.getenv("OPENAI_API_KEY")
         if not self.api_key:
             raise ValueError("Erro: OPENAI_API_KEY não definido no arquivo .env")
-        openai.api_key = self.api_key
+
+        # Criar cliente OpenAI atualizado
+        self.client = openai.OpenAI(api_key=self.api_key)
 
     def generate_commit_message(self, file):
         """Gera mensagens de commit em português usando GPT."""
@@ -28,8 +30,8 @@ class GPTCommitMessageGenerator:
         - ⚡ Melhoria de performance
         """
 
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
+        response = self.client.chat.completions.create(
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "Você é um assistente que gera mensagens de commit concisas e informativas em português, incluindo emojis."},
                 {"role": "user", "content": prompt}
@@ -37,4 +39,4 @@ class GPTCommitMessageGenerator:
             temperature=0.7
         )
 
-        return response['choices'][0]['message']['content'].strip()
+        return response.choices[0].message.content.strip()
