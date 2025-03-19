@@ -44,8 +44,8 @@ print("-------------------------")
 for file in files:
     commit_msg = ai.generate_commit_message(file)
     if commit_msg:
-        subprocess.run(["git", "add", file])
-        subprocess.run(["git", "commit", "-m", commit_msg])
+        #subprocess.run(["git", "add", file])
+        #subprocess.run(["git", "commit", "-m", commit_msg])
         print(f"✅ Committed: {file} -> {commit_msg}")
 
 print("🎉 Todos os arquivos foram commitados individualmente.")

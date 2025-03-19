@@ -40,12 +40,6 @@ Para rodar o bot, basta fornecer o caminho do repositório e escolher a IA que d
 ```bash
 python main.py /caminho/do/repositorio gpt
 ```
-
-Exemplo:
-```bash
-python main.py /home/olivette/atd/asa gpt
-```
-
 ---
 
 ## 📦 Funcionalidades
